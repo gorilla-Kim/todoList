@@ -8,6 +8,7 @@ const {
 // 추가되는 모듈들
 const Koa = require('koa');
 const helmet = require('koa-helmet');
+const Router = require('koa-router');
 
 // app을 생성해줍니다.
 const app = new Koa();
@@ -15,10 +16,15 @@ const app = new Koa();
 // 미들웨어 연결
 app.use(helmet());
 
-// test 응답
-app.use(async (ctx) => {
-  ctx.body = 'Hello World';
+// about routing
+const router = new Router();
+
+router.get('/', (ctx) => {
+  ctx.body = '홈';
 });
+
+app.use(router.routes());
+app.use(router.allowedMethods());
 
 // app을 활성화상태에 둡니다.
 app.listen(port, () => {
