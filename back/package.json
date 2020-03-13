@@ -1,0 +1,27 @@
+{
+  "name": "memo-app",
+  "version": "1.0.0",
+  "description": "memo app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon --watch src/ src/index.js"
+  },
+  "author": "gorilla-Kim",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "koa": "^2.11.0",
+    "koa-helmet": "^5.2.0",
+    "koa-router": "^8.0.8"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "nodemon": "^2.0.2"
+  }
+}
