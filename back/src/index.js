@@ -9,6 +9,7 @@ const {
 const Koa = require('koa');
 const helmet = require('koa-helmet');
 const Router = require('koa-router');
+const api = require('./api');
 
 // app을 생성해줍니다.
 const app = new Koa();
@@ -19,6 +20,7 @@ app.use(helmet());
 // about routing
 const router = new Router();
 
+router.use('/api', api.routes());
 router.get('/', (ctx) => {
   ctx.body = '홈';
 });
