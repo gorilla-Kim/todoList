@@ -10,6 +10,10 @@ const Koa = require('koa');
 const helmet = require('koa-helmet');
 const Router = require('koa-router');
 const api = require('./api');
+const db = require('./db');
+
+/* DB connention */
+db.connect();
 
 // app을 생성해줍니다.
 const app = new Koa();

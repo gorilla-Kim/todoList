@@ -1,7 +1,8 @@
 const Router = require('koa-router');
 // Version 관리 1.0
 const versions = {
-  'v1.0': require('./v1.0')
+  // eslint-disable-next-line global-require
+  'v1.0': require('./v1.0'),
 };
 
 const api = new Router();
