@@ -1,10 +1,16 @@
-const Router = require('koa-router'); 
+const Router = require('koa-router');
 
 const auth = new Router();
 
 /* /api/v1.0/auth */
 auth.get('/', (ctx) => {
   ctx.body = '✅ Welcome to auth!!';
+});
+auth.post('/register/local', (ctx) => {
+  ctx.body = '✅ Welcome to register!!';
+});
+auth.post('/login/local', (ctx) => {
+  ctx.body = '✅ Welcome to login!!';
 });
 
 module.exports = auth;
