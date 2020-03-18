@@ -1,4 +1,5 @@
 const Router = require('koa-router');
+const authCtrl = require('./auth.ctrl');
 
 const auth = new Router();
 
@@ -6,9 +7,7 @@ const auth = new Router();
 auth.get('/', (ctx) => {
   ctx.body = '✅ Welcome to auth!!';
 });
-auth.post('/register/local', (ctx) => {
-  ctx.body = '✅ Welcome to register!!';
-});
+auth.post('/register/local', authCtrl.localRegister);
 auth.post('/login/local', (ctx) => {
   ctx.body = '✅ Welcome to login!!';
 });

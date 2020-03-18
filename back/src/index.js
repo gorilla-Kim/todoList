@@ -8,6 +8,7 @@ const {
 // 추가되는 모듈들
 const Koa = require('koa');
 const helmet = require('koa-helmet');
+const bodyParser = require('koa-bodyparser');
 const Router = require('koa-router');
 const api = require('./api');
 const db = require('./db');
@@ -20,6 +21,7 @@ const app = new Koa();
 
 // 미들웨어 연결
 app.use(helmet());
+app.use(bodyParser());
 
 // about routing
 const router = new Router();
