@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // 환경변수를 불러옵니다.
 require('dotenv').config();
 
@@ -10,6 +11,11 @@ const Koa = require('koa');
 const helmet = require('koa-helmet');
 const bodyParser = require('koa-bodyparser');
 const Router = require('koa-router');
+const compress = require('koa-compress');
+const serve = require('koa-static');
+const path = require('path');
+const send = require('koa-send');
+const zlib = require('zlib');
 const api = require('./api');
 const db = require('./db');
 
@@ -21,14 +27,25 @@ const app = new Koa();
 
 // 미들웨어 연결
 app.use(helmet());
+app.use(compress({
+  filter(content_type) {
+    return /text/i.test(content_type);
+  },
+  threshold: 2048,
+  flush: zlib.Z_SYNC_FLUSH,
+}));
+app.use(serve(path.join(__dirname, '../../front/build')));
 app.use(bodyParser());
+
 
 // about routing
 const router = new Router();
 
 router.use('/api', api.routes());
-router.get('/', (ctx) => {
-  ctx.body = '홈';
+// main route
+router.get('/', async (ctx) => {
+  const mainPath = path.join(__dirname, '../../front/build');
+  await send(ctx, 'index.html', { root: mainPath });
 });
 
 app.use(router.routes());
