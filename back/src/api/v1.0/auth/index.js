@@ -8,8 +8,6 @@ auth.get('/', (ctx) => {
   ctx.body = '✅ Welcome to auth!!';
 });
 auth.post('/register/local', authCtrl.localRegister);
-auth.post('/login/local', (ctx) => {
-  ctx.body = '✅ Welcome to login!!';
-});
+auth.post('/login/local', authCtrl.localLogin);
 
 module.exports = auth;

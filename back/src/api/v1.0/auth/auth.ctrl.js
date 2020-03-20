@@ -62,5 +62,61 @@ exports.localRegister = async (ctx) => {
 
 // local login function
 exports.localLogin = async (ctx) => {
+  const { body } = ctx.request;
 
+  const schema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().min(6).max(30),
+  });
+
+  const result = Joi.validate(body, schema);
+
+  // Schema error
+  if (result.error) {
+    ctx.status = 400;
+    ctx.body = result.error;
+    // eslint-disable-next-line no-useless-return
+    return;
+  }
+
+  const { email, password } = body;
+
+  try {
+    // find user
+    const user = await User.findByEmail(email);
+
+    // email validator
+    if (!user) {
+      // user dose not exist
+      ctx.status = 409;
+      ctx.body = `user[${email}] dose not exist`;
+      return;
+    }
+    // password validator
+    const validate = user.validatePassword(password);
+    if (!validate) {
+      // wrong password..
+      ctx.status = 403;
+      ctx.body = 'Password is not equal!';
+      return;
+    }
+
+    // access token 을 생성한다.
+    const accessToken = await user.generateToken();
+    // access_token이라는 이름으로 access token 을 발급한다.
+    ctx.cookies.set('access_token', accessToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    });
+
+    // 추 후 클라이언트의 Local Storage에 저장할 정보
+    const { _id, displayName, metaInfo } = user;
+    ctx.body = {
+      loggedInfo: {
+        _id, email, displayName, metaInfo,
+      },
+    };
+  } catch (error) {
+    ctx.throw(error);
+  }
 };

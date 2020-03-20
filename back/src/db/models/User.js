@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const token = require('../../lib/token');
 
-const { PASSWORD_HASH_KEY: secret } = process.env;
-
 const User = new mongoose.Schema({
   displayName: String,
   email: String,
@@ -30,6 +28,11 @@ User.statics.findExistancy = function ({ email, displayName }) {
       { displayName },
     ],
   });
+};
+
+// 해당 유저의 비밀번호 일치여부 체크
+User.methods.validatePassword = function (password) {
+  return this.password === password;
 };
 
 // create user token
