@@ -45,6 +45,15 @@ exports.localRegister = async (ctx) => {
       _id: user._id,
       metaInfo: user.metaInfo,
     };
+    // create access_token
+    const accessToken = await user.generateToken()
+      .catch((error) => console.log(error));
+
+    // configure accessToken to httpOnly cookie || 쿠키설정
+    ctx.cookies.set('access_token', accessToken, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    });
   } catch (error) {
     console.log(error);
     ctx.throw(500);

@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const token = require('../../lib/token');
+
+const { PASSWORD_HASH_KEY: secret } = process.env;
 
 const User = new mongoose.Schema({
   displayName: String,
@@ -27,6 +30,18 @@ User.statics.findExistancy = function ({ email, displayName }) {
       { displayName },
     ],
   });
+};
+
+// create user token
+User.methods.generateToken = function () {
+  const { _id, displayName, email } = this;
+  return token.generateToken({
+    user: {
+      _id,
+      displayName,
+      email,
+    },
+  }, 'user');
 };
 
 // local 회원가입
